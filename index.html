@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블로그 임시 작성</title>
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --paper:#ffffff;
+    --ink:#2b2b26;
+    --sub:#8a8578;
+    --accent:#3d6b4f;
+    --line:#e4e0d6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:24px 16px 60px;
+  }
+  .wrap{
+    width:100%;
+    max-width:760px;
+  }
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  h1{
+    font-size:18px;
+    font-weight:700;
+    margin:0;
+    letter-spacing:-0.02em;
+  }
+  .savebar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:var(--sub);
+  }
+  .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:#c4c0b3;
+    transition:background .2s;
+  }
+  .dot.saved{background:var(--accent);}
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.03);
+    overflow:hidden;
+  }
+  input#title{
+    width:100%;
+    border:none;
+    border-bottom:1px solid var(--line);
+    padding:16px 18px;
+    font-size:17px;
+    font-weight:700;
+    outline:none;
+    background:transparent;
+  }
+  input#title::placeholder{color:#c4c0b3;font-weight:600;}
+  textarea#body{
+    width:100%;
+    min-height:420px;
+    border:none;
+    padding:16px 18px 20px;
+    font-size:15px;
+    line-height:1.75;
+    outline:none;
+    resize:vertical;
+    font-family:inherit;
+    background:transparent;
+  }
+  textarea#body::placeholder{color:#c4c0b3;}
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 18px;
+    border-top:1px solid var(--line);
+    background:#fbfaf7;
+    font-size:12px;
+    color:var(--sub);
+  }
+  .actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  button{
+    border:none;
+    border-radius:8px;
+    padding:10px 16px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .primary{
+    background:var(--accent);
+    color:#fff;
+  }
+  .primary:hover{background:#325940;}
+  .ghost{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .ghost:hover{background:#f0eee6;}
+  .toast{
+    position:fixed;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:#fff;
+    padding:9px 16px;
+    border-radius:20px;
+    font-size:13px;
+    opacity:0;
+    pointer-events:none;
+    transition:all .25s ease;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+  .hint{
+    font-size:12px;
+    color:var(--sub);
+    margin-top:10px;
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📝 블로그 임시 작성</h1>
+    <div class="savebar"><span class="dot" id="saveDot"></span><span id="saveStatus">불러오는 중...</span></div>
+  </header>
+
+  <div class="card">
+    <input id="title" placeholder="제목을 입력하세요">
+    <textarea id="body" placeholder="여기에 본문을 작성하세요. 나중에 네이버 블로그에 복사해서 붙여넣으면 됩니다."></textarea>
+    <div class="toolbar">
+      <span id="count">0자</span>
+      <span>이 브라우저에 자동 저장됩니다</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="copyBtn">전체 복사</button>
+    <button class="ghost" id="copyTitleBtn">제목만 복사</button>
+    <button class="ghost" id="copyBodyBtn">본문만 복사</button>
+    <button class="ghost" id="clearBtn">내용 지우기</button>
+  </div>
+
+  <p class="hint">이 저장은 <b>지금 사용 중인 브라우저에만</b> 남습니다. 다른 PC·폰에서는 보이지 않으니, 다 쓰신 뒤에는 꼭 "전체 복사"를 눌러 네이버 블로그에 옮겨 붙여넣으세요.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const titleEl = document.getElementById('title');
+const bodyEl = document.getElementById('body');
+const countEl = document.getElementById('count');
+const saveStatusEl = document.getElementById('saveStatus');
+const saveDot = document.getElementById('saveDot');
+const toastEl = document.getElementById('toast');
+const STORAGE_KEY = 'blog-draft-v1';
+
+function updateCount(){
+  countEl.textContent = bodyEl.value.length.toLocaleString() + '자';
+}
+
+let saveTimer = null;
+function scheduleSave(){
+  saveDot.classList.remove('saved');
+  saveStatusEl.textContent = '저장 중...';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveDraft, 400);
+}
+
+function saveDraft(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      title: titleEl.value,
+      body: bodyEl.value,
+      updatedAt: Date.now()
+    }));
+    saveDot.classList.add('saved');
+    saveStatusEl.textContent = '저장됨';
+  }catch(e){
+    saveStatusEl.textContent = '저장 실패';
+  }
+}
+
+function loadDraft(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      titleEl.value = data.title || '';
+      bodyEl.value = data.body || '';
+      updateCount();
+      saveDot.classList.add('saved');
+      saveStatusEl.textContent = '저장된 초안 불러옴';
+    }else{
+      saveStatusEl.textContent = '새 초안';
+    }
+  }catch(e){
+    saveStatusEl.textContent = '새 초안';
+  }
+}
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1600);
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position='fixed';
+  ta.style.opacity='0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+async function copyText(text, label){
+  if(!text){ showToast('복사할 내용이 없습니다'); return; }
+  try{
+    await navigator.clipboard.writeText(text);
+  }catch(e){
+    fallbackCopy(text);
+  }
+  showToast(label + ' 복사 완료');
+}
+
+bodyEl.addEventListener('input', ()=>{ updateCount(); scheduleSave(); });
+titleEl.addEventListener('input', scheduleSave);
+
+document.getElementById('copyBtn').addEventListener('click', ()=>{
+  const full = (titleEl.value ? titleEl.value + '\n\n' : '') + bodyEl.value;
+  copyText(full, '전체');
+});
+document.getElementById('copyTitleBtn').addEventListener('click', ()=> copyText(titleEl.value, '제목'));
+document.getElementById('copyBodyBtn').addEventListener('click', ()=> copyText(bodyEl.value, '본문'));
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  if(confirm('작성한 내용을 모두 지울까요?')){
+    titleEl.value=''; bodyEl.value=''; updateCount();
+    localStorage.removeItem(STORAGE_KEY);
+    saveDot.classList.remove('saved');
+    saveStatusEl.textContent = '새 초안';
+  }
+});
+
+loadDraft();
+updateCount();
+</script>
+</body>
+</html>
