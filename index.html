@@ -25,137 +25,69 @@
     align-items:center;
     padding:24px 16px 60px;
   }
-  .wrap{
-    width:100%;
-    max-width:760px;
-  }
+  .wrap{ width:100%; max-width:760px; }
   header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:14px;
-    flex-wrap:wrap;
-    gap:8px;
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:14px; flex-wrap:wrap; gap:8px;
   }
-  h1{
-    font-size:18px;
-    font-weight:700;
-    margin:0;
-    letter-spacing:-0.02em;
-  }
-  .savebar{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    font-size:12px;
-    color:var(--sub);
-  }
-  .dot{
-    width:6px;height:6px;border-radius:50%;
-    background:#c4c0b3;
-    transition:background .2s;
-  }
-  .dot.saved{background:var(--accent);}
+  h1{ font-size:18px; font-weight:700; margin:0; letter-spacing:-0.02em; }
+  .savebar{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--sub); }
+  .dot{ width:6px;height:6px;border-radius:50%; background:#c4c0b3; transition:background .2s; }
+  .dot.saved{ background:var(--accent); }
   .card{
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:10px;
-    box-shadow:0 1px 2px rgba(0,0,0,0.03);
-    overflow:hidden;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.03); overflow:hidden;
   }
   input#title{
-    width:100%;
-    border:none;
-    border-bottom:1px solid var(--line);
-    padding:16px 18px;
-    font-size:17px;
-    font-weight:700;
-    outline:none;
-    background:transparent;
+    width:100%; border:none; border-bottom:1px solid var(--line);
+    padding:16px 18px; font-size:17px; font-weight:700; outline:none; background:transparent;
   }
-  input#title::placeholder{color:#c4c0b3;font-weight:600;}
+  input#title::placeholder{ color:#c4c0b3; font-weight:600; }
   #body{
-    width:100%;
-    min-height:420px;
-    padding:16px 18px 20px;
-    font-size:15px;
-    line-height:1.75;
-    outline:none;
-    font-family:inherit;
-    background:transparent;
-    white-space:pre-wrap;
-    word-break:break-word;
+    width:100%; min-height:360px; padding:16px 18px 20px;
+    font-size:15px; line-height:1.75; outline:none; font-family:inherit;
+    background:transparent; white-space:pre-wrap; word-break:break-word;
   }
-  #body:empty:before{
-    content: attr(data-placeholder);
-    color:#c4c0b3;
-  }
-  #body img{
-    max-width:100%;
-    border-radius:6px;
-    margin:10px 0;
-    display:block;
+  #body:empty:before{ content: attr(data-placeholder); color:#c4c0b3; }
+  #body img{ max-width:100%; border-radius:6px; margin:10px 0; display:block; }
+  .imgmark{
+    display:inline-block; background:#eef3ee; color:var(--accent);
+    border:1px dashed #b9d0bf; border-radius:6px; padding:1px 8px;
+    font-size:13px; font-weight:600; margin:2px 0;
   }
   .toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 18px;
-    border-top:1px solid var(--line);
-    background:#fbfaf7;
-    font-size:12px;
-    color:var(--sub);
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 18px; border-top:1px solid var(--line); background:#fbfaf7;
+    font-size:12px; color:var(--sub);
   }
-  .actions{
-    display:flex;
-    gap:8px;
-    margin-top:14px;
-    flex-wrap:wrap;
-  }
+  .actions{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
   button{
-    border:none;
-    border-radius:8px;
-    padding:10px 16px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    font-family:inherit;
+    border:none; border-radius:8px; padding:10px 16px; font-size:13px;
+    font-weight:600; cursor:pointer; font-family:inherit;
   }
-  .primary{
-    background:var(--accent);
-    color:#fff;
-  }
-  .primary:hover{background:#325940;}
-  .ghost{
-    background:transparent;
-    border:1px solid var(--line);
-    color:var(--ink);
-  }
-  .ghost:hover{background:#f0eee6;}
+  .primary{ background:var(--accent); color:#fff; }
+  .primary:hover{ background:#325940; }
+  .ghost{ background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .ghost:hover{ background:#f0eee6; }
   .toast{
-    position:fixed;
-    bottom:26px;
-    left:50%;
-    transform:translateX(-50%) translateY(20px);
-    background:var(--ink);
-    color:#fff;
-    padding:9px 16px;
-    border-radius:20px;
-    font-size:13px;
-    opacity:0;
-    pointer-events:none;
-    transition:all .25s ease;
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; padding:9px 16px; border-radius:20px;
+    font-size:13px; opacity:0; pointer-events:none; transition:all .25s ease;
   }
-  .toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .hint{ font-size:12px; color:var(--sub); margin-top:10px; line-height:1.6; }
+  .imgsection{ margin-top:18px; }
+  .imgsection h2{ font-size:13px; font-weight:700; color:var(--ink); margin:0 0 8px; }
+  .imglist{ display:flex; flex-direction:column; gap:8px; }
+  .imgrow{
+    display:flex; align-items:center; gap:10px; background:var(--paper);
+    border:1px solid var(--line); border-radius:8px; padding:8px 10px;
   }
-  .hint{
-    font-size:12px;
-    color:var(--sub);
-    margin-top:10px;
-    line-height:1.6;
-  }
+  .imgrow img{ width:48px; height:48px; object-fit:cover; border-radius:6px; flex-shrink:0; }
+  .imgrow .label{ font-size:13px; font-weight:600; flex:1; }
+  .imgrow .btns{ display:flex; gap:6px; }
+  .imgrow button{ padding:6px 10px; font-size:12px; }
+  .empty-note{ font-size:12px; color:var(--sub); }
 </style>
 </head>
 <body>
@@ -167,7 +99,7 @@
 
   <div class="card">
     <input id="title" placeholder="제목을 입력하세요">
-    <div id="body" contenteditable="true" data-placeholder="여기에 본문을 작성하세요. 캡처한 화면은 원하는 위치를 클릭한 뒤 Ctrl+V로 바로 붙여넣을 수 있어요."></div>
+    <div id="body" contenteditable="true" data-placeholder="여기에 본문을 작성하세요. 캡처 화면은 원하는 위치에 Ctrl+V로 붙여넣으면 [이미지N] 표시가 남습니다."></div>
     <div class="toolbar">
       <span id="count">0자</span>
       <span>이 브라우저에 자동 저장됩니다</span>
@@ -175,13 +107,23 @@
   </div>
 
   <div class="actions">
-    <button class="primary" id="copyBtn">전체 복사 (이미지 포함)</button>
+    <button class="primary" id="copyBtn">전체 복사</button>
     <button class="ghost" id="copyTitleBtn">제목만 복사</button>
     <button class="ghost" id="copyBodyBtn">본문만 복사</button>
     <button class="ghost" id="clearBtn">내용 지우기</button>
   </div>
 
-  <p class="hint">본문 아무 곳이나 클릭한 뒤 캡처 화면을 <b>Ctrl+V</b>로 붙여넣으면 그 위치에 이미지가 삽입됩니다. "전체 복사"를 누르면 텍스트와 이미지가 함께 복사되니, 네이버 블로그 글쓰기 화면에서 <b>Ctrl+V</b>로 붙여넣으면 이미지도 함께 들어갑니다. 저장은 이 브라우저에만 남으니 다른 PC·폰에서는 안 보여요.</p>
+  <p class="hint">
+    1) 본문에 캡처를 붙여넣으면 그 자리에 <b>[이미지N]</b> 표시가 남아요.<br>
+    2) "전체 복사"로 텍스트를 네이버 블로그에 먼저 붙여넣으세요. (이미지는 같이 안 옮겨져요 — 대부분의 에디터가 텍스트+이미지 동시 붙여넣기를 지원하지 않기 때문이에요)<br>
+    3) [이미지N] 표시를 지우고 그 자리에 커서를 둔 뒤, 아래 이미지 목록에서 같은 번호의 "복사" 버튼을 누르고 <b>Ctrl+V</b>로 붙여넣으세요.
+  </p>
+
+  <div class="imgsection">
+    <h2>🖼 본문에 삽입된 이미지</h2>
+    <div class="imglist" id="imglist"></div>
+    <p class="empty-note" id="emptyNote">아직 삽입된 이미지가 없습니다.</p>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -193,7 +135,15 @@ const countEl = document.getElementById('count');
 const saveStatusEl = document.getElementById('saveStatus');
 const saveDot = document.getElementById('saveDot');
 const toastEl = document.getElementById('toast');
-const STORAGE_KEY = 'blog-draft-v2';
+const imglistEl = document.getElementById('imglist');
+const emptyNoteEl = document.getElementById('emptyNote');
+const STORAGE_KEY = 'blog-draft-v3';
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1700);
+}
 
 function updateCount(){
   countEl.textContent = bodyEl.innerText.replace(/\n+$/,'').length.toLocaleString() + '자';
@@ -228,7 +178,6 @@ function loadDraft(){
       const data = JSON.parse(raw);
       titleEl.value = data.title || '';
       bodyEl.innerHTML = data.bodyHTML || '';
-      updateCount();
       saveDot.classList.add('saved');
       saveStatusEl.textContent = '저장된 초안 불러옴';
     }else{
@@ -237,23 +186,18 @@ function loadDraft(){
   }catch(e){
     saveStatusEl.textContent = '새 초안';
   }
+  updateCount();
+  renderImageList();
 }
 
-function showToast(msg){
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  setTimeout(()=>toastEl.classList.remove('show'), 1700);
-}
-
-// ---- 본문 내 이미지 삽입 ----
+// ---- 이미지 삽입 ----
 function insertImageAtCursor(dataUrl){
   const img = document.createElement('img');
   img.src = dataUrl;
   const sel = window.getSelection();
   let inBody = false;
   if(sel && sel.rangeCount > 0){
-    const node = sel.anchorNode;
-    inBody = node && bodyEl.contains(node);
+    inBody = sel.anchorNode && bodyEl.contains(sel.anchorNode);
   }
   if(inBody){
     const range = sel.getRangeAt(0);
@@ -284,90 +228,125 @@ bodyEl.addEventListener('paste', (e)=>{
           insertImageAtCursor(reader.result);
           updateCount();
           scheduleSave();
+          renderImageList();
           showToast('이미지 삽입됨');
         };
         reader.readAsDataURL(file);
       }
     }
   }
-  if(imageFound){
-    e.preventDefault();
-    return;
-  }
-  // 일반 텍스트는 서식 없이 붙여넣기
+  if(imageFound){ e.preventDefault(); return; }
   e.preventDefault();
   const text = (e.clipboardData || window.clipboardData).getData('text/plain');
   document.execCommand('insertText', false, text);
 });
 
-bodyEl.addEventListener('input', ()=>{ updateCount(); scheduleSave(); });
+bodyEl.addEventListener('input', ()=>{
+  updateCount();
+  scheduleSave();
+  renderImageList();
+});
 titleEl.addEventListener('input', scheduleSave);
 
-// ---- 복사 기능 (이미지 포함 리치 복사) ----
-function richCopy(nodes, label){
-  const temp = document.createElement('div');
-  temp.contentEditable = 'true';
-  temp.style.position = 'fixed';
-  temp.style.left = '-9999px';
-  temp.style.top = '0';
-  nodes.forEach(n => temp.appendChild(n));
-  document.body.appendChild(temp);
-
-  const range = document.createRange();
-  range.selectNodeContents(temp);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
-
-  let ok = false;
-  try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
-
-  sel.removeAllRanges();
-  document.body.removeChild(temp);
-  showToast(ok ? (label + ' 복사 완료') : '복사 실패, 다시 시도해주세요');
+// ---- 본문 텍스트 추출 (이미지는 [이미지N] 표시로) ----
+function extractText(node, counterRef){
+  let out = '';
+  node.childNodes.forEach(child=>{
+    if(child.nodeType === Node.TEXT_NODE){
+      out += child.textContent;
+    }else if(child.nodeName === 'BR'){
+      out += '\n';
+    }else if(child.nodeName === 'IMG'){
+      counterRef.n += 1;
+      out += `\n[이미지${counterRef.n}]\n`;
+    }else if(child.nodeName === 'DIV' || child.nodeName === 'P'){
+      out += extractText(child, counterRef) + '\n';
+    }else{
+      out += extractText(child, counterRef);
+    }
+  });
+  return out;
 }
 
-document.getElementById('copyBtn').addEventListener('click', ()=>{
-  const nodes = [];
-  if(titleEl.value){
-    const h = document.createElement('h2');
-    h.textContent = titleEl.value;
-    nodes.push(h);
+function getBodyText(){
+  const counter = { n: 0 };
+  return extractText(bodyEl, counter).replace(/\n{3,}/g, '\n\n').trim();
+}
+
+// ---- 이미지 목록 렌더 ----
+function renderImageList(){
+  const imgs = Array.from(bodyEl.querySelectorAll('img'));
+  imglistEl.innerHTML = '';
+  emptyNoteEl.style.display = imgs.length ? 'none' : 'block';
+  imgs.forEach((img, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'imgrow';
+    row.innerHTML = `
+      <img src="${img.src}" alt="이미지 ${idx+1}">
+      <span class="label">이미지${idx+1}</span>
+      <div class="btns">
+        <button class="primary" data-act="copyimg" data-idx="${idx}">복사</button>
+        <button class="ghost" data-act="dlimg" data-idx="${idx}">다운로드</button>
+      </div>`;
+    imglistEl.appendChild(row);
+  });
+}
+
+imglistEl.addEventListener('click', async (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const idx = parseInt(btn.dataset.idx, 10);
+  const imgs = Array.from(bodyEl.querySelectorAll('img'));
+  const target = imgs[idx];
+  if(!target) return;
+  if(btn.dataset.act === 'dlimg'){
+    const a = document.createElement('a');
+    a.href = target.src;
+    a.download = `image-${idx+1}.png`;
+    a.click();
+  }else if(btn.dataset.act === 'copyimg'){
+    try{
+      const res = await fetch(target.src);
+      const blob = await res.blob();
+      await navigator.clipboard.write([ new ClipboardItem({ [blob.type]: blob }) ]);
+      showToast(`이미지${idx+1} 복사됨 - 원하는 위치에 Ctrl+V`);
+    }catch(err){
+      showToast('이미지 복사가 지원되지 않는 브라우저예요. 대신 다운로드해서 올려주세요.');
+    }
   }
-  const clone = bodyEl.cloneNode(true);
-  while(clone.firstChild) nodes.push(clone.firstChild);
-  richCopy(nodes, '전체');
 });
 
-document.getElementById('copyBodyBtn').addEventListener('click', ()=>{
-  const clone = bodyEl.cloneNode(true);
-  const nodes = [];
-  while(clone.firstChild) nodes.push(clone.firstChild);
-  richCopy(nodes, '본문');
-});
-
-document.getElementById('copyTitleBtn').addEventListener('click', async ()=>{
-  if(!titleEl.value){ showToast('제목이 비어있습니다'); return; }
+// ---- 텍스트 복사 ----
+async function copyPlainText(text, label){
+  if(!text){ showToast('복사할 내용이 없습니다'); return; }
   try{
-    await navigator.clipboard.writeText(titleEl.value);
-    showToast('제목 복사 완료');
+    await navigator.clipboard.writeText(text);
   }catch(e){
     const ta = document.createElement('textarea');
-    ta.value = titleEl.value;
+    ta.value = text;
     ta.style.position='fixed'; ta.style.opacity='0';
     document.body.appendChild(ta);
     ta.select();
     try{ document.execCommand('copy'); }catch(err){}
     document.body.removeChild(ta);
-    showToast('제목 복사 완료');
   }
+  showToast(label + ' 복사 완료');
+}
+
+document.getElementById('copyBtn').addEventListener('click', ()=>{
+  const bodyText = getBodyText();
+  const full = (titleEl.value ? titleEl.value + '\n\n' : '') + bodyText;
+  copyPlainText(full, '전체');
 });
+document.getElementById('copyBodyBtn').addEventListener('click', ()=> copyPlainText(getBodyText(), '본문'));
+document.getElementById('copyTitleBtn').addEventListener('click', ()=> copyPlainText(titleEl.value, '제목'));
 
 document.getElementById('clearBtn').addEventListener('click', ()=>{
   if(confirm('작성한 내용을 모두 지울까요?')){
     titleEl.value = '';
     bodyEl.innerHTML = '';
     updateCount();
+    renderImageList();
     localStorage.removeItem(STORAGE_KEY);
     saveDot.classList.remove('saved');
     saveStatusEl.textContent = '새 초안';
@@ -375,7 +354,6 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 });
 
 loadDraft();
-updateCount();
 </script>
 </body>
 </html>
