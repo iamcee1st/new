@@ -147,6 +147,66 @@
     margin-top:10px;
     line-height:1.6;
   }
+  .imgsection{
+    margin-top:18px;
+  }
+  .imgsection h2{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .dropzone{
+    border:1.5px dashed var(--line);
+    border-radius:10px;
+    padding:22px;
+    text-align:center;
+    font-size:13px;
+    color:var(--sub);
+    background:var(--paper);
+    cursor:text;
+    transition:border-color .15s, background .15s;
+  }
+  .dropzone:focus{
+    outline:none;
+    border-color:var(--accent);
+    background:#fbfaf7;
+  }
+  .dropzone.drag{
+    border-color:var(--accent);
+    background:#f0f6f2;
+  }
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:10px;
+    margin-top:12px;
+  }
+  .thumb{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .thumb img{
+    width:100%;
+    height:100px;
+    object-fit:cover;
+    display:block;
+  }
+  .thumb .thumbbar{
+    display:flex;
+    justify-content:space-between;
+    padding:5px 6px;
+    background:#fbfaf7;
+    border-top:1px solid var(--line);
+  }
+  .thumb .thumbbar button{
+    padding:3px 7px;
+    font-size:11px;
+    border-radius:5px;
+  }
 </style>
 </head>
 <body>
@@ -173,6 +233,13 @@
   </div>
 
   <p class="hint">이 저장은 <b>지금 사용 중인 브라우저에만</b> 남습니다. 다른 PC·폰에서는 보이지 않으니, 다 쓰신 뒤에는 꼭 "전체 복사"를 눌러 네이버 블로그에 옮겨 붙여넣으세요.</p>
+
+  <div class="imgsection">
+    <h2>🖼 캡처 이미지</h2>
+    <div class="dropzone" id="dropzone" tabindex="0">여기를 클릭한 뒤 <b>Ctrl+V</b>로 캡처한 이미지를 붙여넣으세요</div>
+    <div class="gallery" id="gallery"></div>
+    <p class="hint">이미지도 이 브라우저에만 저장됩니다. 퇴근 전에 이미지마다 "다운로드" 버튼을 눌러 파일로 받아두시면, 집에서 네이버 블로그 에디터에 파일을 업로드하시면 됩니다.</p>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -278,6 +345,94 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 
 loadDraft();
 updateCount();
+
+// ---- 이미지 붙여넣기 기능 ----
+const dropzone = document.getElementById('dropzone');
+const gallery = document.getElementById('gallery');
+const IMG_KEY = 'blog-draft-images-v1';
+let images = [];
+
+function loadImages(){
+  try{
+    const raw = localStorage.getItem(IMG_KEY);
+    images = raw ? JSON.parse(raw) : [];
+  }catch(e){ images = []; }
+  renderGallery();
+}
+
+function saveImages(){
+  try{
+    localStorage.setItem(IMG_KEY, JSON.stringify(images));
+  }catch(e){
+    showToast('이미지 저장 공간이 부족해요. 몇 개를 다운로드 후 삭제해주세요.');
+  }
+}
+
+function renderGallery(){
+  gallery.innerHTML = '';
+  images.forEach((img, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    div.innerHTML = `
+      <img src="${img.data}" alt="캡처 이미지 ${idx+1}">
+      <div class="thumbbar">
+        <button class="ghost" data-act="dl" data-idx="${idx}">다운로드</button>
+        <button class="ghost" data-act="del" data-idx="${idx}">삭제</button>
+      </div>`;
+    gallery.appendChild(div);
+  });
+}
+
+gallery.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const idx = parseInt(btn.dataset.idx, 10);
+  if(btn.dataset.act === 'dl'){
+    const a = document.createElement('a');
+    a.href = images[idx].data;
+    a.download = `capture-${idx+1}.png`;
+    a.click();
+  }else if(btn.dataset.act === 'del'){
+    images.splice(idx,1);
+    saveImages();
+    renderGallery();
+  }
+});
+
+function handlePasteEvent(e){
+  const items = (e.clipboardData || window.clipboardData)?.items;
+  if(!items) return;
+  let found = false;
+  for(const item of items){
+    if(item.kind === 'file' && item.type.startsWith('image/')){
+      found = true;
+      const file = item.getAsFile();
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        images.push({ data: reader.result, addedAt: Date.now() });
+        saveImages();
+        renderGallery();
+        showToast('이미지 추가됨');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  if(found) e.preventDefault();
+}
+
+document.addEventListener('paste', (e)=>{
+  const items = (e.clipboardData || window.clipboardData)?.items;
+  if(!items) return;
+  for(const item of items){
+    if(item.kind === 'file' && item.type.startsWith('image/')){
+      handlePasteEvent(e);
+      break;
+    }
+  }
+});
+
+loadImages();
+
 </script>
 </body>
 </html>
